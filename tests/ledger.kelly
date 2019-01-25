@@ -1,5 +1,6 @@
 epoch 0;
 slot 0;
+;; testing a tx that should fail as it spends more than what is in the UTXO
 tx {
     txid 100;
     txin [
@@ -11,6 +12,7 @@ tx {
         coin 100;
     ];
 };
+;; testinga  tx that should succeed
 tx {
     txid 101;
     txin [
@@ -26,8 +28,10 @@ tx {
     ];
 };
 slot 1;
+;; testing epoch change working
 epoch 1;
 slot 5;
+;; testing tx that should fail as it has no inputs
 tx {
     txid 102;
     txin [
@@ -37,6 +41,7 @@ tx {
         coin 50;
     ];
 };
+;; testing tx that should fail as it has no inputs
 tx {
     txid 103;
     txin [
