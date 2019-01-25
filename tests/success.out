@@ -1,0 +1,18 @@
+<generatedTop>
+  <k>
+    .
+  </k>
+  <currEpoch>
+    1
+  </currEpoch>
+  <currSlot>
+    5
+  </currSlot>
+  <utxo>
+    txid 101 ;  ix 0 ; |-> addr base  0 ;  coin 10 ;
+    txid 101 ;  ix 1 ; |-> addr base  1 ;  coin 20 ;
+  </utxo>
+  <debugLog>
+    txid 100 ;  "failed. Must have balance(IN)>=balance(OUT) and >=1 input" ~> txid 102 ;  "failed. Must have balance(IN)>=balance(OUT) and >=1 input" ~> txid 103 ;  "failed. Must have balance(IN)>=balance(OUT) and >=1 input"
+  </debugLog>
+</generatedTop>

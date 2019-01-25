@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+
+set -e      # Exit immediately if any command fails
+set -u      # Using undefined variables is an error. Exit immediately
+
+# Utilities
+# ---------
+
+progress() { echo "== $@" >&2 ; }
+die()      { echo -e "FATAL:" "$@" >&2 ; exit 1 ; }
+
+pretty_diff() {
+    git --no-pager diff --no-index "$@"
+}
+
+# Environment Setup
+# -----------------
+
+run_env() {
+    local run_file="$1"
+    local build_dir="$(pwd)/.build"
+    local release_dir="$build_dir/k/k-distribution/target/release/k"
+    [[ "$run_file" =~ ^tests/* ]] && DEFN_DIRECTORY=$build_dir/defn/test
+    export DEFN_DIR="${DEFN_DIRECTORY:-$build_dir/defn/kelly}"
+    export PATH="$release_dir/lib/native/linux:$release_dir/lib/native/linux64:$release_dir/bin/:$PATH"
+    eval $(opam config env)
+}
+
+# Runners
+# -------
+
+run_krun() {
+    local run_file=$1 ; shift
+    run_env "$run_file"
+    export K_OPTS=-Xss500m
+    krun --debug --directory "$DEFN_DIR" "$run_file" "$@"
+}
+
+run_kdebug() {
+    progress "debugging: $1"
+    ( run_krun "$1" --debugger )
+}
+
+run_test() {
+    local test_file="$1" ; shift
+    local expected_file="tests/success.out"
+    [[ -f "$expected_file" ]] \
+        || die "Expected output file '$expected_file' does not exist..."
+    local output_file="$(mktemp $test_file.out.XXXXXX)"
+    trap "rm -rf $output_file" INT TERM EXIT
+    export DEFN_DIRECTORY="$(pwd)/.build/defn/test"
+    run_krun "$test_file" > "$output_file"
+    pretty_diff "$expected_file" "$output_file"
+}
+
+# Main
+# ----
+
+cd "$(dirname $0)"
+
+# main functionality
+run_command="$1" ; shift
+case "$run_command" in
+
+    # Running
+    run)   run_krun   "$1" ;;
+    debug) run_kdebug "$1"             ;;
+
+    # Testing
+    test)  run_test   "$1" ;;
+
+    *) echo "
+    usage: $0 <cmd> <file> <K args>*
+
+       # Running
+       # -------
+       $0 run   <pgm>   Run a single Kelly program
+       $0 debug <pgm>   Run a single Kelly program in the debugger
+
+       Note: <pgm> is a path to a file containing a Kelly program.
+
+       # Testing
+       # -------
+       $0 test <pgm>    Run a single Kelly program like it's a test
+
+       Note: This command is more for devs and CI servers.
+" ; exit ;;
+esac

@@ -1,0 +1,6 @@
+/.build/*
+!/.build/k
+!/.build/pandoc-tangle
+
+*.pdf
+*.sty

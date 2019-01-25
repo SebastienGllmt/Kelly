@@ -1,0 +1,46 @@
+epoch 0;
+slot 0;
+tx {
+    txid 100;
+    txin [
+        txid 100;
+        ix 0;
+    ];
+    txout [
+        addr base 000;
+        coin 100;
+    ];
+};
+tx {
+    txid 101;
+    txin [
+        txid 100;
+        ix 0;
+    ];
+    txout [
+        addr base 000;
+        coin 10;
+        -
+        addr base 001;
+        coin 20;
+    ];
+};
+slot 1;
+epoch 1;
+slot 5;
+tx {
+    txid 102;
+    txin [
+    ];
+    txout [
+        addr base 000;
+        coin 50;
+    ];
+};
+tx {
+    txid 103;
+    txin [
+    ];
+    txout [
+    ];
+};

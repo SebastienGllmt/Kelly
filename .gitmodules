@@ -1,0 +1,8 @@
+[submodule ".build/k"]
+	path = .build/k
+	url = https://github.com/runtimeverification/k
+	ignore = untracked
+[submodule ".build/pandoc-tangle"]
+	path = .build/pandoc-tangle
+	url = https://github.com/ehildenb/pandoc-tangle
+	ignore = untracked
