@@ -7,6 +7,11 @@ This is NOT an official project. Just a fun project I spend some time on to lear
 
 See the `tests` folder for example input and output.
 
+Semantics
+========
+
+See [kelly.md](kelly.md) for the semantics.
+
 Building
 ========
 
